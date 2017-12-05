@@ -9,21 +9,20 @@ using namespace std;
 
 class dfs {
 public:
-  // how about undirected? from vector?
-  void iterate(vector<vector<int>> &adj) {
-    stack<int> path; path.push(1); vector<int> iter(adj.size());
+  void iterate(vector<vector<int>> &adj, int s) {
+    vector<int> from(adj.size());
+    stack<int> path; path.push(s); from[s] = s;
 
     while(!path.empty()) {
-      int node = path.top(), i = iter[node]; vector<int> list = adj[node];
-      cout << "visiting:" << node << endl;
-      if(list.size() == 0 || i >= list.size())  { path.pop(); }
-      else { path.push(list[i]); iter[node]++; }
+      int node = path.top(); path.pop(); cout << "visiting:" << node << endl;
+      for(const auto &n : adj[node])
+        if(from[n] == 0) { from[n] = node; path.push(n); }
     }
   }
 
-  void recurse(vector<vector<int>> &adj) {
+  void recurse(vector<vector<int>> &adj, int s) {
       vector<int> from(adj.size());
-      recurse(adj, from, 1);
+      recurse(adj, from, s);
   }
 
   void recurse(vector<vector<int>> &adj, vector<int> &from, int node) {
@@ -39,6 +38,6 @@ int main() {
   adj[2].push_back(4); adj[2].push_back(5);
 
   dfs d;
-  d.iterate(adj);
-  d.recurse(adj);
+  d.iterate(adj, 1);
+  //d.recurse(adj, 1);
 }
