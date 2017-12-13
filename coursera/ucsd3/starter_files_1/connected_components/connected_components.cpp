@@ -6,33 +6,19 @@ using std::vector;
 using std::pair;
 using std::stack;
 
-int next(vector<int> &from, int start) {
-  for(int i=start; i<from.size(); ++i) if(from[i] < 0) return i;
-  return -1;
-}
-
-void explore(vector<vector<int>> &adj, vector<int> &from, int node, int res) {
-  vector<int> iter(adj.size()); stack<int> path; path.push(node); from[node] = node;
+void explore(vector<vector<int>> &adj, vector<int> &from, int s) {
+  stack<int> path; path.push(s); from[s] = s;
   while(!path.empty()) {
-    int n = path.top(), i = iter[n]; vector<int> &list = adj[n];
-
-    if(list.size() == 0 || i >= list.size()) path.pop();
-    else {
-      int cur = list[i]; iter[n] = i+1;
-      if(from[cur] < 0) { path.push(cur); from[cur] = n; }
-    }
+    int node = path.top(); path.pop();
+    for(const auto &n : adj[node])
+      if(from[n] < 0) { from[n] = node; path.push(n); }
   }
 }
 
 int number_of_components(vector<vector<int>> &adj) {
-  int res = 0, node = 0;
-  vector<int> from(adj.size(), -1);
-
-  do {
-    explore(adj, from, node, res);
-    node = next(from, node+1); ++res;
-  } while(node > 0);
-
+  int res = 0; vector<int> from(adj.size(), -1);
+  for(int i=0; i<adj.size(); ++i)
+    if(from[i] < 0) explore(adj, from, i);
   return res;
 }
 
