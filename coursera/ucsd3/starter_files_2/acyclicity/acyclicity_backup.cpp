@@ -40,5 +40,5 @@ int main() {
     std::cin >> x >> y;
     adj[x - 1].push_back(y - 1);
   }
-  std::cout << acyclic(adj);
+  std::cout << acyclic(adj) << std::endl;
 }

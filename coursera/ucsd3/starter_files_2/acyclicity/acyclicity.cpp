@@ -2,18 +2,23 @@
 #include <vector>
 using std::vector;
 
-/*
-simple dfs
-
-*/
-
-void explore(int node, vector<vector<int>> &adj, vector<int> &from) {
-  for(const auto &child : adj[node])
-    if(!from[child] < 0) explore(child, adj, from);
+bool reach(vector<vector<int>> &adj, int src, int dest, vector<bool> &visited) {
+  if(src == dest) return true;
+  for(auto child : adj[src]) {
+    if(visited[child]) continue;
+    visited[child] = true;
+    if(reach(adj, child, dest, visited)) return true;
+  }
+  return false;
 }
 
-int acyclic(vector<vector<int>> &adj) {
-
+int cyclic(vector<vector<int>> &adj) {
+  for(int i=0; i<adj.size(); i++)
+    for(auto src : adj[i]) {
+      vector<bool> visited(adj.size());
+      if(reach(adj, src, i, visited)) return 1;
+    }
+  return 0;
 }
 
 int main() {
@@ -25,5 +30,5 @@ int main() {
     std::cin >> x >> y;
     adj[x - 1].push_back(y - 1);
   }
-  std::cout << acyclic(adj);
+  std::cout << cyclic(adj) << std::endl;
 }

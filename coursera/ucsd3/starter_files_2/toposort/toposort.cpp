@@ -5,14 +5,16 @@
 using std::vector;
 using std::pair;
 
-void dfs(vector<vector<int> > &adj, vector<int> &used, vector<int> &order, int x) {
-  //write your code here
-}     
+void dfs(vector<vector<int>> &adj, vector<int> &used, vector<int> &order, int x) {
+  for(auto child : adj[x])
+    if(!used[child]) dfs(adj, used, order, child);
+  order.push_back(x); used[x] = 1;
+}
 
-vector<int> toposort(vector<vector<int> > adj) {
-  vector<int> used(adj.size(), 0);
-  vector<int> order;
-  //write your code here
+vector<int> toposort(vector<vector<int>> &adj) {
+  vector<int> used(adj.size(), 0), order;
+  for(int i=0; i<adj.size(); i++) if(!used[i]) dfs(adj, used, order, i);
+  std::reverse(order.begin(), order.end());
   return order;
 }
 
