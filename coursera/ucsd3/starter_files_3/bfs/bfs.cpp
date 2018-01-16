@@ -6,7 +6,16 @@ using std::vector;
 using std::queue;
 
 int distance(vector<vector<int> > &adj, int s, int t) {
-  //write your code here
+  vector<int> dist(adj.size(), -1);
+  queue<int> q; q.push(s); dist[s] = 0;
+
+  while(!q.empty()) {
+    int front = q.front(); if(front == t) return dist[front];
+    for(int node : adj[front])
+      if(dist[node] < 0) { dist[node] = dist[front] + 1; q.push(node); }
+    q.pop();
+  }
+  
   return -1;
 }
 
@@ -25,3 +34,10 @@ int main() {
   s--, t--;
   std::cout << distance(adj, s, t);
 }
+/*
+dist array to measure
+bfs from s
+  if t is met return dist
+return -1
+
+*/

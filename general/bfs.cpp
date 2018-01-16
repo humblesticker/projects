@@ -6,7 +6,14 @@ using namespace std;
 class bfs {
 public:
   void explore(vector<vector<int>> &adj, int node) {
-
+    vector<int> from(adj.size());
+    queue<int> q; q.push(node);
+    while(!q.empty()) {
+      int front = q.front(); cout << front << endl;
+      for(int child : adj[front])
+        if(from[child] == 0) { from[child] = front; q.push(child); }
+      q.pop();
+    }
   }
 };
 
