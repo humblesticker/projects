@@ -5,9 +5,9 @@
 using namespace std;
 
 bool find(vector<int> &power, unordered_map<int, unordered_set<int>> &mm, int val, int pos) {
-    for(auto p : power) {
-        auto found = mm.find(p - val); if(found == mm.end()) continue;
-        for(auto s : found->second) if(s != pos) return true;
+    for(const auto &p : power) {
+        const auto &found = mm.find(p - val); if(found == mm.end()) continue;
+        for(const auto &s : found->second) if(s != pos) return true;
     }
     return false;
 }
