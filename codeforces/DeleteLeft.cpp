@@ -1,21 +1,14 @@
 #include <iostream>
-#include <algorithm>
 #include <string>
 using namespace std;
 
 int main() {
     string s, t; cin >> s >> t;
-    int i = 0, slen = s.length(), tlen = t.length(), len = min(slen, tlen);
-    for(; i<len; i++) 
-        if(s[slen-1-i] != t[tlen-1-i]) break;
-    cout << slen + tlen - 2 * i << "\n";
+    int i = s.length()-1, j = t.length()-1;
+    while(i >= 0 && j >= 0) {
+        if(s[i] != t[j]) break;
+        i--; j--;
+    }
+    cout << i + j + 2 << "\n";
     return 0;
 }
-/*
-int count = 0
-iterate from back to shorter string len
-    if not same break
-    count++
-return slen + tlen - 2 * count
-
-*/
